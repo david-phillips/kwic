@@ -94,7 +94,8 @@ sub search_file {
         or die "Failed to open $fname: $!\n";
     my @kwic_lines_for_file = ();
     for my $line (<$input_fh>) {
-		$line =~ s/\t/    /g;
+        chomp $line;
+        $line =~ s/\t/    /g;
         my $kwic_lines = search_line($pattern, $line, $fname);
         @kwic_lines_for_file = (
             @kwic_lines_for_file,
@@ -120,7 +121,7 @@ sub search_line {
     my @tokens = split(/$pattern/, $line);
     for (my $i = 0; $i < @tokens; ++$i) {
         my $keyword = $tokens[$i];
-		# only visit split delimiters
+        # only visit split delimiters
         next unless ($i % 2 == 1);
         $MAX_KEYWORD_LEN = length $keyword if
                            length $keyword > $MAX_KEYWORD_LEN;
